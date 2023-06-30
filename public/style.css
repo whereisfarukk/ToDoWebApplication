@@ -31,9 +31,6 @@ body{
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
-.form--hidden {
-    display: none;
-}
 
 .form > *:first-child {
     margin-top: 0;
@@ -88,6 +85,12 @@ body{
     margin-top: 0.5rem;
     font-size: 0.85rem;
     color: var(--color-error);
+}
+.alert{
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-error);
+    text-align: center;
 }
 
 .form__button {
