@@ -9,6 +9,31 @@ const db = mysql.createConnection({
     database: process.env.DATABASE
 });
 
+exports.login = async (req, res) => {
+        console.log(req.body);
+        const  email= req.body.email;
+        const password = req.body.password;
+        if(!email || !password){
+            return res.render("login",{
+                message: 'you need email and password.'
+            })
+        }
+        db.query('SELECT * FROM users WHERE email = ?',[email], async (error,results) => {
+            if(error){
+                console.log(error);
+            }
+
+            if(!results || !(await bcrypt.compare(password,results[0].password))){
+                res.render('login',{
+                    message: 'the email or its password is incorrect'
+                })
+            }
+            else{
+                console.log('login success');
+            }
+        })
+}
+
 exports.register = (req, res) => {
     console.log(req.body);
 
@@ -48,5 +73,5 @@ exports.register = (req, res) => {
         })
 
     });
-
+ 
 }

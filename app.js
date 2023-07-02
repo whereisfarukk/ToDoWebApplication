@@ -42,7 +42,27 @@ db.connect((error) => {
 app.use('/', require('./routes/pages'));
 app.use('/auth',require('./routes/auth'));
 
-
 app.listen(5000,() => {
     console.log("server started on port 5000");
 })
+
+
+// to download from the data base //
+// app.get('/users',(res,req)=>{
+//     db.query('SELECT * FROM users',(err,rows,fields)=>{
+//         if(!err)
+//         console.log(rows);
+//         else
+//         console.log(err);
+//     })
+// });
+
+
+// 1.First its going to app.js where app.use('/', require('./routes/pages')); when we press /
+// then it will going to routes folder pages.js
+// 2.After going to pages.js ,it will render the register page.
+// 3.Then register page will return a path auth/register.
+// 4.In the app.js ,app.use('/auth',require('./routes/auth')); this command will execute ,cause register page return the path starting with auth.
+// 5.Then it will go to the routes/auth and the router.post will execute.This method had '/register' which comes from the register.hbs .Here only /register written ,beacause auth/ already executed from app.js 
+// 6.Then authController.register will be called ,and it will execute the auth.js file  which was in the controller folder.
+
