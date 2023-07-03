@@ -22,3 +22,25 @@ exports.showNotes = async (req, res)  => {
       }
     });
   };
+
+  exports.saveTodos = (req, res) => {
+    console.log(req.body);
+  
+    // const userId = req.body.id;
+    const userId =  67;
+    db.query(
+      "INSERT INTO notes SET ? ",
+      { id: userId, text: req.body.text },
+      (error, results) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(results);
+          return res.render("login", {
+            message: "user registered",
+          });
+         // console.log(results);
+        }
+      }
+    );
+  };

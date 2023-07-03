@@ -7,7 +7,7 @@ const notesController = require('../controllers/notes');
 
 router.post('/register',authController.register)
 router.post('/login',authController.login)
-router.post('/todo',authController.saveTodos)
+router.post('/todo',notesController.saveTodos)
 router.get('/todo',notesController.showNotes)
 // router.get('/todo',authController.showTodos)
 
