@@ -28,7 +28,9 @@
           placeholder="password"
           name="password"
         />
-        <div class="form__input-error-message"></div>
+        <div class="form__input-error-message">{{#if input_message}}
+        <h4 class="alert">{{input_message}}</h4>
+      {{/if}}</div>
       </div>
       <button class="form__button" type="submit">Continue</button>
       {{#if message}}
