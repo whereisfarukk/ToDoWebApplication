@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
-
+require("dotenv").config();
 const bcrypt = require("bcryptjs");
 
 const db = mysql.createConnection({
@@ -19,25 +19,30 @@ exports.login = async (req, res) => {
       message: "You need to provide both email and password.",
     });
   }
-  db.query(
-    "SELECT * FROM users WHERE email = ?",
-    [email],
-    async (error, results) => {
+
+  db.query("SELECT * FROM users WHERE email = ?",[email],async (error, results) => {
       if (error) {
         console.log(error);
-        throw error;
+        
       }
 
-      if (!results || !(await bcrypt.compare(password, results[0].password))) {
+      if (!results || results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
         res.render("login", {
           message: "The email or its password is incorrect",
         });
-      } else {
+      }
+      else {
         console.log(results[0].email);
         res.render("todo");
       }
-    }
-  );
+      try {
+        const token = jwt.sign({ email: results[0].email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE_IN });
+        console.log(token);
+      } catch (error) {
+        console.log(error);
+        // Handle the error appropriately
+      }
+    });
 };
 
 exports.register = (req, res) => {
@@ -49,7 +54,9 @@ exports.register = (req, res) => {
   const confirm_password = req.body.confirm_password;
 
   db.query(
-    "SELECT  email FROM users WHERE email = ?", [email], async (error, results) => {
+    "SELECT  email FROM users WHERE email = ?",
+    [email],
+    async (error, results) => {
       if (error) {
         console.log(error);
         throw error;
@@ -76,6 +83,13 @@ exports.register = (req, res) => {
           if (error) {
             console.log(error);
           } else {
+            // try {
+            //   const token = jwt.sign({ email: results[0].email}, 'dhsjf3423jhsdf3423df', { expiresIn: '5d' });
+            //   console.log(token);
+            // } catch (error) {
+            //   console.log(error);
+            //   // Handle the error appropriately
+            // }
             console.log(results);
             return res.render("login", {
               message: "user registered",
@@ -116,8 +130,6 @@ exports.register = (req, res) => {
 //       return res.status(200).json(result[0]);
 //   });
 // };
-
-  
 
 // exports.updateTodo = (req, res) => {
 //   const { text } = req.body;
