@@ -27,7 +27,7 @@ exports.showNotes = async (req, res)  => {
     console.log(req.body);
   
     // const userId = req.body.id;
-    const userId =  67;
+    const userId =  106;
     db.query(
       "INSERT INTO notes SET ? ",
       { id: userId, text: req.body.text },

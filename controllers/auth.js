@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
       }
       try {
         const token = jwt.sign({ email: results[0].email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE_IN });
-        console.log(token);
+      //  console.log(token);
       } catch (error) {
         console.log(error);
         // Handle the error appropriately
@@ -101,27 +101,27 @@ exports.register = (req, res) => {
   );
 };
 
-// exports.saveTodos = (req, res) => {
-//   console.log(req.body);
+exports.saveTodos = (req, res) => {
+  console.log(req.body);
 
-//   // const userId = req.body.id;
-//   const userId =  58;
-//   db.query(
-//     "INSERT INTO notes SET ? ",
-//     { id: userId, text: req.body.text },
-//     (error, results) => {
-//       if (error) {
-//         console.log(error);
-//       } else {
-//         console.log(results);
-//         return res.render("login", {
-//           message: "user registered",
-//         });
-//        // console.log(results);
-//       }
-//     }
-//   );
-// };
+  // const userId = req.body.id;
+  const userId =  102;
+  db.query(
+    "INSERT INTO notes SET ? ",
+    { id: userId, text: req.body.text },
+    (error, results) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(results);
+        return res.render("login", {
+          message: "user registered",
+        });
+       // console.log(results);
+      }
+    }
+  );
+};
 // exports.singleTodo = (req, res) => {
 //   const q = `SELECT * FROM notes where id=${req.params.id}`;
 
