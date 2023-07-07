@@ -2,6 +2,8 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
+const authController = require('../controllers/auth');
+
 
 const db = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -12,8 +14,9 @@ const db = mysql.createConnection({
 
 
 exports.checkUserAuth = async (req, res, next) => {
-    let token
-    const { authorization } = req.headers
+    const token = req.token;
+    const { authorization } = req.headers;
+    console.log(token);
     if (authorization && authorization.startsWith('Bearer')) {
       try {
         // Get Token from header
@@ -37,7 +40,7 @@ exports.checkUserAuth = async (req, res, next) => {
             }
           });
           console.log('bd is working')          
-        next()
+          next()
       } catch (error) {
         console.log(error)
         res.status(401).send({ "status": "failed", "message": "Unauthorized User" })
@@ -45,8 +48,10 @@ exports.checkUserAuth = async (req, res, next) => {
     }
     if (!token) {
       res.status(401).send({ "status": "failed", "message": "Unauthorized User, No Token" })
-      console.log('no token found');
+      console.log('no token found',token);
     }
     
-  }
+}
   
+
+

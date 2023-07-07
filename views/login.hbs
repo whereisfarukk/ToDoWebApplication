@@ -50,4 +50,44 @@
     </form>
   </div>
   <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const email = loginForm.elements.email.value;
+        const password = loginForm.elements.password.value;
+
+        try {
+          const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const token = data.token;
+
+            // Save the token to local storage or session storage for future use
+            localStorage.setItem('token', token);
+
+            // Redirect the user to the todo list page or perform other actions based on the token
+            window.location.href = '/todo';
+          } else {
+            const errorData = await response.json();
+            const errorMessage = errorData.message;
+            // Display the error message to the user
+            console.log(errorMessage);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    });
+  </script>
 </body>

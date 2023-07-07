@@ -1,10 +1,9 @@
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 
-
 function addTask() {
   if (inputBox.value === "") {
-    alert("you must write something!");
+    alert("You must write something!");
   } else {
     let li = document.createElement("li");
     li.innerHTML = inputBox.value;
@@ -22,7 +21,9 @@ function addTask() {
     li.appendChild(edit);
     li.appendChild(save);
     save.style.display = "none";
-    save.style.display = "none";
+    edit.style.display = "inline-block";
+    span.style.display = "inline-block";
+
     function enableEditing() {
       li.contentEditable = true; // Enable editing
       li.classList.add("editing"); // Add a class to style the editing state
@@ -60,18 +61,53 @@ function addTask() {
       save.style.display = "none"; // Hide the save button
     }
 
-    edit.addEventListener("click", enableEditing);
+    function deleteTodoItem() {
+      const text = li.innerHTML;
+      const xhr = new XMLHttpRequest();
+      xhr.open("DELETE", `/auth/todo/${text}`, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // Handle successful response
+          console.log("Task deleted successfully");
+          li.remove(); // Remove the todo item from the interface
+        } else {
+          // Handle error or other responses
+          console.error("Error deleting task");
+        }
+      };
+      xhr.send();
+    }
 
+    function enableEditing() {
+      const updatedText = li.innerHTML;
+      const todoId = todo.id; // Get the todo ID from your data
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", `/auth/todo/${todoId}`, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // Handle successful response
+          console.log("Task updated successfully");
+        } else {
+          // Handle error or other responses
+          console.error("Error updating task");
+        }
+      };
+      xhr.send(JSON.stringify({ text: updatedText }));
+    }
+    edit.addEventListener("click", enableEditing);
     save.addEventListener("click", function () {
       disableEditing();
     });
+    span.addEventListener("click", deleteTodoItem);
 
     li.addEventListener("blur", function () {
       disableEditing();
     });
+
     const text = inputBox.value;
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/auth/todo", true);  // this line trigger the router/auth.js(router.get('/todo',authController.showTodos))
+    xhr.open("POST", "/auth/todo", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -83,24 +119,10 @@ function addTask() {
       }
     };
     xhr.send(JSON.stringify({ text: text }));
+
+    inputBox.value = "";
   }
-  inputBox.value = "";
 }
-
-listContainer.addEventListener(
-  "click",
-  function (e) {
-    if (e.target.tagName === "LI") {
-      e.target.classList.toggle("checked");
-    } else if (e.target.tagName === "SPAN") {
-      e.target.parentElement.remove();
-    }
-    
-  },
-  false
-);
-
-
 
 function retrieveTodos() {
   fetch("/auth/todo")
@@ -123,20 +145,20 @@ function retrieveTodos() {
         li.appendChild(edit);
         li.appendChild(save);
         save.style.display = "none";
-        save.style.display = "none";
+        edit.style.display = "inline-block";
+        span.style.display = "inline-block";
 
-        // Rest of the code...
         function enableEditing() {
           li.contentEditable = true; // Enable editing
           li.classList.add("editing"); // Add a class to style the editing state
           edit.style.display = "none"; // Hide the edit button
           save.style.display = "inline-block"; // Show the save button
-    
+
           // Disable the edit, save, and span buttons
           edit.disabled = true;
           save.disabled = true;
           span.disabled = true;
-    
+
           // Prevent default focus behavior of the edit and save buttons
           edit.addEventListener("mousedown", function (event) {
             event.preventDefault();
@@ -144,7 +166,7 @@ function retrieveTodos() {
           save.addEventListener("mousedown", function (event) {
             event.preventDefault();
           });
-    
+
           // Set focus to the editable element and place cursor at the end of the text
           li.focus();
           const textNode = li.firstChild;
@@ -155,20 +177,51 @@ function retrieveTodos() {
           selection.removeAllRanges();
           selection.addRange(range);
         }
-    
+
         function disableEditing() {
           li.contentEditable = false; // Disable editing
           li.classList.remove("editing"); // Remove the class when editing is finished
           edit.style.display = "inline-block"; // Show the edit button
           save.style.display = "none"; // Hide the save button
+          const updatedText =  li.textContent.slice(0, -3);
+          const todoId = todo.id; // Get the todo ID from your data
+          const xhr = new XMLHttpRequest();
+          xhr.open("PUT", `/auth/todo/${todoId}`, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              // Handle successful response
+              console.log("Task updated successfully");
+            } else {
+              // Handle error or other responses
+              console.error("Error updating task");
+            }
+          };
+          xhr.send(JSON.stringify({ text: updatedText }));
         }
-    
+        function deleteTodoItem() {
+          const todoId = todo.id; // Get the todo ID from your data
+          const xhr = new XMLHttpRequest();
+          xhr.open("DELETE", `/auth/todo/${todoId}`, true);
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              // Handle successful response
+              console.log("Task deleted successfully");
+              li.remove(); // Remove the todo item from the interface
+            } else {
+              // Handle error or other responses
+              console.error("Error deleting task");
+            }
+          };
+          xhr.send();
+        }
+
         edit.addEventListener("click", enableEditing);
-    
         save.addEventListener("click", function () {
           disableEditing();
         });
-    
+        span.addEventListener("click", deleteTodoItem);
+
         li.addEventListener("blur", function () {
           disableEditing();
         });
@@ -181,3 +234,12 @@ function retrieveTodos() {
 
 // Call the retrieveTodos function when the page loads
 window.addEventListener("load", retrieveTodos);
+listContainer.addEventListener("click",function(e){
+  if(e.target.tagName === "LI"){
+      e.target.classList.toggle("checked");
+  
+  }
+  else if(e.target.tagName === "SPAN"){
+      e.target.parentElement.remove();
+  }
+},false);

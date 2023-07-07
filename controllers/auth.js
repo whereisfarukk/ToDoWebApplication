@@ -33,17 +33,25 @@ exports.login = async (req, res) => {
       }
       else {
         console.log(results[0].email);
-        res.render("todo");
+         res.render("todo");
       }
       try {
         const token = jwt.sign({ email: results[0].email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE_IN });
       //  console.log(token);
+        //  req.headers = `Bearer ${token}`; // Set the Authorization header
+        //  console.log(req.headers);
+        //  res.render("todo", { token: req.headers });
+
+        // req.token = token; // Set the token as a property of the request object
+        // console.log(req.token);
+        // res.render("todo", { token: req.token });
       } catch (error) {
         console.log(error);
         // Handle the error appropriately
       }
     });
 };
+
 
 exports.register = (req, res) => {
   console.log(req.body);
@@ -101,27 +109,7 @@ exports.register = (req, res) => {
   );
 };
 
-exports.saveTodos = (req, res) => {
-  console.log(req.body);
 
-  // const userId = req.body.id;
-  const userId =  102;
-  db.query(
-    "INSERT INTO notes SET ? ",
-    { id: userId, text: req.body.text },
-    (error, results) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(results);
-        return res.render("login", {
-          message: "user registered",
-        });
-       // console.log(results);
-      }
-    }
-  );
-};
 // exports.singleTodo = (req, res) => {
 //   const q = `SELECT * FROM notes where id=${req.params.id}`;
 
