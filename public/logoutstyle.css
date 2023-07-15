@@ -98,15 +98,15 @@ section, section div {
   section:hover .cover { transform: rotateX(-120deg);  }
   
   section:hover .innie {
-    background: linear-gradient(to bottom, red, transparent);
+    background: linear-gradient(to bottom, green, transparent);
   }
   
   section:hover .spine {
-    background: linear-gradient(to bottom, red, transparent);
+    background: linear-gradient(to bottom, green, transparent);
   }
   
   section:hover .outie {
-    background: linear-gradient(to bottom, red, transparent);
+    background: linear-gradient(to bottom, green, transparent);
     color: rgba(255, 255, 255, 0);
   }
   section:hover .shadow { 
@@ -149,4 +149,15 @@ section, section div {
     font-size: smaller;
       opacity: .5;
   }
+  .button-container {
+    display: inline-block;
+    background-color: #E10000;
+    border-radius: 15px;
+    padding: 5px 10px;
+  }
   
+  .log_out_button {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
