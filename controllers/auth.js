@@ -10,7 +10,7 @@ const db = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
-exports.login = async (req, res) => {
+exports.login = async (req, res,callback) => {
   console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
@@ -32,8 +32,10 @@ exports.login = async (req, res) => {
         });
       }
       else {
+        const username = results[0].name;
         console.log(results[0].email);
-         res.render("todo");
+         res.render("todo", { username });
+         
       }
       try {
         const token = jwt.sign({ email: results[0].email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE_IN });

@@ -1,6 +1,5 @@
 
 section, section div {
-    /* See it in slo-mo, you can change this */
     transition-duration: .6s;
   }
   
@@ -88,7 +87,12 @@ section, section div {
     background-color: greenyellow;
     transform: translateZ(.25rem);
     text-shadow: 0 2px 4px rgba(0,0,0,.2);
-  }
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
   
   section:hover { background: #EBEFF2; }
   section:hover .button { opacity: 1; }

@@ -73,8 +73,10 @@
             const data = await response.json();
             const token = data.token;
 
-            // Save the token to local storage or session storage for future use
+            const username = data.username;
+            // Saving the token to local storage or session storage for future use
             localStorage.setItem('token', token);
+            document.getElementById('username').textContent = username;
 
             // Redirect the user to the todo list page or perform other actions based on the token
             window.location.href = '/todo';

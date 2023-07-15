@@ -184,7 +184,7 @@ function retrieveTodos() {
           edit.style.display = "inline-block"; // Show the edit button
           save.style.display = "none"; // Hide the save button
           const updatedText =  li.textContent.slice(0, -3);
-          const todoId = todo.id; // Get the todo ID from your data
+          const todoId = todo.id; // Get the todo ID from my data
           const xhr = new XMLHttpRequest();
           xhr.open("PUT", `/auth/todo/${todoId}`, true);
           xhr.setRequestHeader("Content-Type", "application/json");
@@ -209,7 +209,6 @@ function retrieveTodos() {
               console.log("Task deleted successfully");
               li.remove(); // Remove the todo item from the interface
             } else {
-              // Handle error or other responses
               console.error("Error deleting task");
             }
           };
@@ -232,7 +231,7 @@ function retrieveTodos() {
     });
 }
 
-// Call the retrieveTodos function when the page loads
+// Calling the retrieveTodos function when the page loads
 window.addEventListener("load", retrieveTodos);
 listContainer.addEventListener("click",function(e){
   if(e.target.tagName === "LI"){
@@ -243,3 +242,5 @@ listContainer.addEventListener("click",function(e){
       e.target.parentElement.remove();
   }
 },false);
+
+
