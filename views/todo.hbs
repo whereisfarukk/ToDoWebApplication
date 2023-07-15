@@ -1,20 +1,55 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>To-Do List</title>
     <link rel="stylesheet" href="/todo_style.css" />
+    <link rel="stylesheet" href="/logoutstyle.css" />
+
   </head>
   <body>
-    <div class="container" >
+    <div class="container">
       <div class="todo-app">
         <h2>To-Do List <img src="/images/icon.png" /></h2>
+
+        {{!-- CODDE FOR LOGOUT BUTTON --}}
+        
+        <section class="logout-section">
+          <div class="button">
+            <a
+              href="/login"
+              class="log_out_button"
+              data-show-count="false"
+              data-size="large"
+            >Log Out</a>
+          </div>
+          <div class="cover">
+            <div class="innie">
+              <svg class="twitter-logo" height="10" width="10">
+                <path fill="white"></path>
+              </svg>
+            </div>
+            <div class="spine"></div>
+            <div class="outie">
+              <svg class="twitter-logo" height="10" width="10">
+                <path fill="white"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </section>
+
+
         <div class="row">
-          <input type="text" id="input-box" placeholder="add your text" name="text" />
+          <input
+            type="text"
+            id="input-box"
+            placeholder="add your text"
+            name="text"
+          />
           <button onclick="addTask()">add</button>
         </div>
         <ul id="list-container">
-          
+
           <!-- <li class="checked">task 1</li>
         <li>task 2</li>
         <li>task 3</li> -->
@@ -26,9 +61,10 @@
           <button class="span">Span</button>
         </li> -->
         </ul>
+
       </div>
     </div>
-      <script src="/todo.js"></script> 
+    <script src="/todo.js"></script>
+
   </body>
 </html>
-

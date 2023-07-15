@@ -23,7 +23,9 @@ exports.saveTodos = (req, res) => {
   console.log(req.body);
 
   // const userId = req.body.id;
-  const userId =  110;
+  const userId =  112;
+  const Id = req.body.id;
+  console.log(Id);
   db.query(
     "INSERT INTO notes SET ? ",
     { id: userId, text: req.body.text },
