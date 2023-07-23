@@ -140,7 +140,8 @@ function addTask() {
 }
 
 function retrieveTodos() {
-  fetch("/auth/todo")
+  const userId = localStorage.getItem('userId');
+  fetch(`/auth/todo?userId=${userId}`)
     .then((response) => response.json())
     .then((data) => {
       data.forEach((todo) => {
@@ -245,18 +246,6 @@ function retrieveTodos() {
       console.error("Error retrieving todos:", error);
     });
 }
-
-// Calling the retrieveTodos function when the page loads
-window.addEventListener("load", retrieveTodos);
-listContainer.addEventListener("click",function(e){
-  if(e.target.tagName === "LI"){
-      e.target.classList.toggle("checked");
-  
-  }
-  else if(e.target.tagName === "SPAN"){
-      e.target.parentElement.remove();
-  }
-},false);
 function saveTodos(userId, text, callback) {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "/auth/todo", true);
@@ -273,3 +262,18 @@ function saveTodos(userId, text, callback) {
   };
   xhr.send(JSON.stringify({ userId, text }));
 }
+
+
+// Calling the retrieveTodos function when the page loads
+window.addEventListener("load", function () {
+  retrieveTodos();
+});
+listContainer.addEventListener("click",function(e){
+  if(e.target.tagName === "LI"){
+      e.target.classList.toggle("checked");
+  
+  }
+  else if(e.target.tagName === "SPAN"){
+      e.target.parentElement.remove();
+  }
+},false);

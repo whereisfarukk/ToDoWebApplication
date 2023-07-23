@@ -7,11 +7,29 @@ const db = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
-exports.showNotes = (req, res) => {
-  
-  const query = "SELECT * FROM notes";
+// exports.showNotes = (req, res) => {
+//   const userId = req.query.userId;
+//   if (!userId) {
+//     return res.status(400).json({ error: "userId is required." });
+//   }
 
-  db.query(query, (error, results) => {
+//   const query = "SELECT * FROM notes WHERE ref_id = ?"; 
+
+//   db.query(query, (error, results) => {
+//     if (error) {
+//       console.log(error);
+//       res.status(500).json({ error: "Error retrieving todos" });
+//     } else {
+//       res.status(200).json(results);
+//     }
+//   });
+// };
+
+exports.showNotes = (req, res) => {
+  const userId = req.query.userId;
+  const query = "SELECT * FROM notes WHERE ref_id = ?";
+
+  db.query(query, [userId], (error, results) => {
     if (error) {
       console.log(error);
       res.status(500).json({ error: "Error retrieving todos" });
