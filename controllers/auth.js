@@ -32,25 +32,29 @@ exports.login = async (req, res,callback) => {
         });
       }
       else {
+        const userId = results[0].id;
         const username = results[0].name;
-        console.log(results[0].email);
-         res.render("todo", { username });
-         
-      }
-      try {
-        const token = jwt.sign({ email: results[0].email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE_IN });
-      //  console.log(token);
-        //  req.headers = `Bearer ${token}`; // Set the Authorization header
-        //  console.log(req.headers);
-        //  res.render("todo", { token: req.headers });
+        console.log(username);
+        console.log(userId);
+      //  res.render("todo", { username , userId });
+        return res.status(200).json({ userId, username });
 
-        // req.token = token; // Set the token as a property of the request object
-        // console.log(req.token);
-        // res.render("todo", { token: req.token });
-      } catch (error) {
-        console.log(error);
-        // Handle the error appropriately
+        //return res.status(200).json({ userId, username });
       }
+      // try {
+      //   const token = jwt.sign({ email: results[0].email}, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE_IN });
+      // //  console.log(token);
+      //   //  req.headers = `Bearer ${token}`; // Set the Authorization header
+      //   //  console.log(req.headers);
+      //   //  res.render("todo", { token: req.headers });
+
+      //   // req.token = token; // Set the token as a property of the request object
+      //   // console.log(req.token);
+      //   // res.render("todo", { token: req.token });
+      // } catch (error) {
+      //   console.log(error);
+      //   // Handle the error appropriately
+      // }
     });
 };
 

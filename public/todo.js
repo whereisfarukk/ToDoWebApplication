@@ -24,6 +24,11 @@ function addTask() {
     edit.style.display = "inline-block";
     span.style.display = "inline-block";
 
+
+
+    const userId = localStorage.getItem('userId');
+    console.log(userId);
+
     function enableEditing() {
       li.contentEditable = true; // Enable editing
       li.classList.add("editing"); // Add a class to style the editing state
@@ -118,10 +123,20 @@ function addTask() {
         console.error("Error adding task");
       }
     };
+    
     xhr.send(JSON.stringify({ text: text }));
-
+    
+    saveTodos(userId, text, (error, results) => {
+      if (error) {
+        console.log("Error saving todo:", error);
+      } else {
+        console.log("Todo saved successfully:", results);
+        window.location.href = '/todo';
+      }
+    });
     inputBox.value = "";
   }
+ 
 }
 
 function retrieveTodos() {
@@ -179,10 +194,10 @@ function retrieveTodos() {
         }
 
         function disableEditing() {
-          li.contentEditable = false; // Disable editing
-          li.classList.remove("editing"); // Remove the class when editing is finished
-          edit.style.display = "inline-block"; // Show the edit button
-          save.style.display = "none"; // Hide the save button
+          li.contentEditable = false; 
+          li.classList.remove("editing"); 
+          edit.style.display = "inline-block";
+          save.style.display = "none"; 
           const updatedText =  li.textContent.slice(0, -3);
           const todoId = todo.id; // Get the todo ID from my data
           const xhr = new XMLHttpRequest();
@@ -193,14 +208,14 @@ function retrieveTodos() {
               // Handle successful response
               console.log("Task updated successfully");
             } else {
-              // Handle error or other responses
+              // Handle erro responses
               console.error("Error updating task");
             }
           };
           xhr.send(JSON.stringify({ text: updatedText }));
         }
         function deleteTodoItem() {
-          const todoId = todo.id; // Get the todo ID from your data
+          const todoId = todo.id; // Get the todo ID from  data
           const xhr = new XMLHttpRequest();
           xhr.open("DELETE", `/auth/todo/${todoId}`, true);
           xhr.onreadystatechange = function () {
@@ -209,7 +224,7 @@ function retrieveTodos() {
               console.log("Task deleted successfully");
               li.remove(); // Remove the todo item from the interface
             } else {
-              console.error("Error deleting task");
+              console.log("Error deleting task");
             }
           };
           xhr.send();
@@ -242,5 +257,19 @@ listContainer.addEventListener("click",function(e){
       e.target.parentElement.remove();
   }
 },false);
-
-
+function saveTodos(userId, text, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "/auth/todo", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        callback(null, data);
+      } else {
+        callback("Error saving todo", null);
+      }
+    }
+  };
+  xhr.send(JSON.stringify({ userId, text }));
+}

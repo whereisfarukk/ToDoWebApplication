@@ -8,6 +8,7 @@ const db = mysql.createConnection({
 });
 
 exports.showNotes = (req, res) => {
+  
   const query = "SELECT * FROM notes";
 
   db.query(query, (error, results) => {
@@ -20,23 +21,26 @@ exports.showNotes = (req, res) => {
   });
 };
 exports.saveTodos = (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
+  const userId = req.body.userId; // Use the userId from the request
+  const text = req.body.text;
+ 
+  if (!userId || !text) {
+    return res.status(400).json({ error: "Both userId and text are required." });
+  }
 
-  // const userId = req.body.id;
-  const userId =  112;
-  const Id = req.body.id;
-  console.log(Id);
   db.query(
     "INSERT INTO notes SET ? ",
-    { id: userId, text: req.body.text },
+    { ref_id: userId, text: text },
     (error, results) => {
       if (error) {
         console.log(error);
       } else {
-        console.log(results);
-        return res.render("login", {
-          message: "user registered",
-        });
+       // console.log(results);
+       res.status(200).json({ message: "Todo saved successfully" });
+        // return res.render("login", {
+        //   message: "user registered",
+        // });
        // console.log(results);
       }
     }

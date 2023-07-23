@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
@@ -7,7 +8,7 @@
 </head>
 <body>
   <div class="container">
-    <form action="/auth/login" method="POST" >
+    <form id="loginForm" action="/auth/login"  method="POST"  >
       <h1 class="form__title">Login</h1>
       <div class="form__message form__message--error"></div>
       <div class="form__input-group">
@@ -49,47 +50,6 @@
       </p>
     </form>
   </div>
-  <script src="main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const loginForm = document.getElementById('loginForm');
-
-      loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const email = loginForm.elements.email.value;
-        const password = loginForm.elements.password.value;
-
-        try {
-          const response = await fetch('/auth/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            const token = data.token;
-
-            const username = data.username;
-            // Saving the token to local storage or session storage for future use
-            localStorage.setItem('token', token);
-            document.getElementById('username').textContent = username;
-
-            // Redirect the user to the todo list page or perform other actions based on the token
-            window.location.href = '/todo';
-          } else {
-            const errorData = await response.json();
-            const errorMessage = errorData.message;
-            // Display the error message to the user
-            console.log(errorMessage);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      });
-    });
-  </script>
+<script src="/login.js"></script>
 </body>
+</html>
