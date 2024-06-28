@@ -1,7 +1,7 @@
 ## Codebase Structure
 
 ```
-ToDoApp
+ToDoWebApplication
 ├── controllers
 │   ├── auth.js
 │   └── notes.js
